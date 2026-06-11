@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "postinstall": "npx aio-commerce-lib-app hooks postinstall"
+    "postinstall": "npx aio-commerce-lib-app hooks postinstall && node scripts/ensure-esm-generated-actions.js",
+    "read-order-state": "node scripts/read-order-state.js"
   },
   "keywords": [],
   "author": "",
@@ -14,6 +15,8 @@
   "dependencies": {
     "@adobe/aio-commerce-lib-app": "^1.6.0",
     "@adobe/aio-commerce-lib-config": "^1.5.0",
-    "@adobe/aio-commerce-sdk": "^1.2.1"
+    "@adobe/aio-commerce-sdk": "^1.2.1",
+    "@adobe/aio-lib-state": "^5.3.1",
+    "@adobe/aio-sdk": "^6.0.0"
   }
 }
