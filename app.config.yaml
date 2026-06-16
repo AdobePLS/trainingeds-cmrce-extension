@@ -6,3 +6,7 @@ extensions:
   # This extension is required for app management. Do not remove.
   commerce/extensibility/1:
     $include: src/commerce-extensibility-1/ext.config.yaml
+
+  # This extension added for Commerce Admin UI.  Do not remove, unless you really want to.
+  commerce/backend-ui/1:
+    $include: src/commerce-backend-ui-1/ext.config.yaml

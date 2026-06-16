@@ -1,0 +1,26 @@
+# Merge into src/commerce-backend-ui-1/ext.config.yaml — defines registration web action.
+
+operations:
+  view:
+    - type: web
+      impl: index.html
+actions: actions
+web: web-src
+runtimeManifest:
+  packages:
+    admin-ui-sdk:
+      license: Apache-2.0
+      actions:
+        registration:
+          function: .generated/actions/registration/index.js
+          web: yes
+          runtime: nodejs:22
+          inputs:
+            LOG_LEVEL: $LOG_LEVEL
+          annotations:
+            require-adobe-auth: true
+            final: true
+
+# The [pre-app-build] hooks are auto-generated. Do not remove or manually edit.
+hooks:
+  pre-app-build: EXTENSION=backend-ui/1 npx aio-commerce-lib-app hooks pre-app-build

@@ -1,4 +1,22 @@
 {
+  "adminUiSdk": {
+    "registration": {
+      "menuItems": [
+        {
+          "id": "order_enrichment_admin::apps",
+          "isSection": true,
+          "sortOrder": 100,
+          "title": "Order Enrichment"
+        },
+        {
+          "id": "order_enrichment_admin::enriched_orders",
+          "parent": "order_enrichment_admin::apps",
+          "sortOrder": 1,
+          "title": "Enriched Orders"
+        }
+      ]
+    }
+  },
   "businessConfig": {
     "schema": [
       {
