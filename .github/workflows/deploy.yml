@@ -9,6 +9,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -24,6 +25,9 @@ jobs:
       - name: Install AIO CLI
         run: npm install -g @adobe/aio-cli
 
+      - name: Show AIO CLI version
+        run: aio --version
+
       - name: Create .env for deployment
         env:
           AIO_RUNTIME_NAMESPACE: ${{ secrets.AIO_RUNTIME_NAMESPACE }}
@@ -35,17 +39,44 @@ jobs:
           COMMERCE_API_BASE_URL: ${{ secrets.COMMERCE_API_BASE_URL }}
           COMMERCE_STORE_CODE: ${{ secrets.COMMERCE_STORE_CODE }}
         run: |
-          echo "AIO_runtime_namespace=$AIO_RUNTIME_NAMESPACE" >> .env
-          echo "AIO_runtime_auth=$AIO_RUNTIME_AUTH" >> .env
-          echo "IMS_OAUTH_S2S_CLIENT_ID=$IMS_OAUTH_S2S_CLIENT_ID" >> .env
-          echo "IMS_OAUTH_S2S_CLIENT_SECRET=$IMS_OAUTH_S2S_CLIENT_SECRET" >> .env
-          echo "IMS_OAUTH_S2S_ORG_ID=$IMS_OAUTH_S2S_ORG_ID" >> .env
-          echo "IMS_OAUTH_S2S_SCOPES=$IMS_OAUTH_S2S_SCOPES" >> .env
-          echo "COMMERCE_API_BASE_URL=$COMMERCE_API_BASE_URL" >> .env
-          echo "COMMERCE_STORE_CODE=$COMMERCE_STORE_CODE" >> .env
+          cat > .env <<EOF
+          AIO_runtime_namespace=$AIO_RUNTIME_NAMESPACE
+          AIO_runtime_auth=$AIO_RUNTIME_AUTH
+          AIO_runtime_apihost=https://adobeioruntime.net
+          IMS_OAUTH_S2S_CLIENT_ID=$IMS_OAUTH_S2S_CLIENT_ID
+          IMS_OAUTH_S2S_CLIENT_SECRET=$IMS_OAUTH_S2S_CLIENT_SECRET
+          IMS_OAUTH_S2S_ORG_ID=$IMS_OAUTH_S2S_ORG_ID
+          IMS_OAUTH_S2S_SCOPES=$IMS_OAUTH_S2S_SCOPES
+          COMMERCE_API_BASE_URL=$COMMERCE_API_BASE_URL
+          COMMERCE_STORE_CODE=$COMMERCE_STORE_CODE
+          EOF
+
+      - name: Validate required deploy config
+        env:
+          AIO_RUNTIME_NAMESPACE: ${{ secrets.AIO_RUNTIME_NAMESPACE }}
+          AIO_RUNTIME_AUTH: ${{ secrets.AIO_RUNTIME_AUTH }}
+        run: |
+          test -n "$AIO_RUNTIME_NAMESPACE" || (echo "Missing secret: AIO_RUNTIME_NAMESPACE" && exit 1)
+          test -n "$AIO_RUNTIME_AUTH" || (echo "Missing secret: AIO_RUNTIME_AUTH" && exit 1)
+          grep '^AIO_runtime_namespace=' .env >/dev/null || (echo ".env missing AIO_runtime_namespace" && exit 1)
+          grep '^AIO_runtime_auth=' .env >/dev/null || (echo ".env missing AIO_runtime_auth" && exit 1)
+          grep '^AIO_runtime_apihost=' .env >/dev/null || (echo ".env missing AIO_runtime_apihost" && exit 1)
+
+      - name: Safe debug summary
+        run: |
+          echo "Repository: $GITHUB_REPOSITORY"
+          echo "Branch: $GITHUB_REF"
+          echo "Node version: $(node --version)"
+          echo "AIO CLI version: $(aio --version)"
+          echo ".env keys written:"
+          cut -d= -f1 .env | sed 's/^/ - /'
+          echo "AIO_runtime_namespace present in .env:"
+          grep '^AIO_runtime_namespace=' .env | sed 's/=.*/=[MASKED]/'
+          echo "AIO_runtime_auth present in .env:"
+          grep '^AIO_runtime_auth=' .env | sed 's/=.*/=[MASKED]/'
 
       - name: Deploy
-        run: aio app deploy
+        run: aio app deploy --no-publish
 
       - name: Verify deployment
         run: aio runtime action list
