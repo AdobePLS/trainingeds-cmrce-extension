@@ -1,7 +1,7 @@
 import { register } from '@adobe/uix-guest';
 import { useEffect } from 'react';
 
-import { MainPage } from './MainPage';
+import MainPage from './MainPage';
 import { extensionId } from './Constants';
 
 /**

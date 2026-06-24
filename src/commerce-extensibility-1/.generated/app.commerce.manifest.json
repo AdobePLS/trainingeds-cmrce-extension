@@ -51,40 +51,22 @@
       {
         "events": [
           {
-            "description": "Use case description for the event.",
+            "description": "Triggered when an order is saved and routed to order-event-consumer.",
             "fields": [
               {
                 "name": "*"
               }
             ],
-            "label": "Sample Event",
-            "name": "plugin.sample_event",
+            "label": "Order Saved",
+            "name": "observer.sales_order_save_after",
             "runtimeActions": [
-              "my-package/handle-sample-event"
+              "course-labs/order-event-consumer"
             ]
           }
         ],
         "provider": {
-          "description": "A description for your Commerce Events provider.",
-          "label": "Commerce Events Provider"
-        }
-      }
-    ],
-    "external": [
-      {
-        "events": [
-          {
-            "description": "Use case description for the event.",
-            "label": "Sample Event",
-            "name": "be-observer.sample_event",
-            "runtimeActions": [
-              "my-package/handle-sample-event"
-            ]
-          }
-        ],
-        "provider": {
-          "description": "A description for your External Events provider.",
-          "label": "External Events Provider"
+          "description": "Commerce events for order enrichment processing.",
+          "label": "Order Enrichment Events"
         }
       }
     ]
@@ -94,33 +76,5 @@
     "displayName": "benjie-cmrce-extension",
     "id": "benjie-cmrce-extension",
     "version": "1.0.0"
-  },
-  "webhooks": [
-    {
-      "category": "modification",
-      "description": "A sample Commerce Webhook handler.",
-      "label": "Sample Webhook",
-      "runtimeAction": "my-package/handle-webhook",
-      "webhook": {
-        "batch_name": "my_app",
-        "hook_name": "sample_hook",
-        "method": "POST",
-        "webhook_method": "plugin.sample.event",
-        "webhook_type": "after"
-      }
-    },
-    {
-      "category": "modification",
-      "description": "A sample Commerce Webhook handler using an explicit URL.",
-      "label": "Sample Webhook with URL",
-      "webhook": {
-        "batch_name": "my_app",
-        "hook_name": "sample_hook_url",
-        "method": "POST",
-        "url": "https://example.com/webhook",
-        "webhook_method": "plugin.sample.event",
-        "webhook_type": "after"
-      }
-    }
-  ]
+  }
 }

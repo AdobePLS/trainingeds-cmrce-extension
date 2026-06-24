@@ -11,6 +11,7 @@ const ESM_PACKAGE = { type: 'module' };
 const targets = [
   'src/commerce-extensibility-1/.generated/actions/app-management/package.json',
   'src/commerce-configuration-1/.generated/actions/app-management/package.json',
+  'src/commerce-backend-ui-1/.generated/actions/registration/package.json',
 ];
 
 for (const target of targets) {

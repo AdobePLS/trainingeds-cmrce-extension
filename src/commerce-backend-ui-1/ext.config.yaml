@@ -23,4 +23,4 @@ runtimeManifest:
 
 # The [pre-app-build] hooks are auto-generated. Do not remove or manually edit.
 hooks:
-  pre-app-build: EXTENSION=backend-ui/1 npx aio-commerce-lib-app hooks pre-app-build
+  pre-app-build: EXTENSION=backend-ui/1 npx aio-commerce-lib-app hooks pre-app-build && npm run ensure-esm
