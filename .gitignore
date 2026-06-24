@@ -1,2 +1,30 @@
+# package directories
 node_modules
-.env
+jspm_packages
+
+# build
+build
+dist
+.manifest-dist.yml
+
+# config & secrets
+config.json
+.env*
+.aio
+console.json
+.aws.tmp.creds.json
+
+# IDE & temp
+.cache
+.idea
+.nyc_output
+.vscode
+coverage
+.wskdebug.props.tmp
+.parcel-cache
+.DS_Store
+.yo-repository
+logs
+
+# test output
+junit.xml
